@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Lox {
+  static boolean hadError = false;
+
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
       // Wrong Usage
@@ -38,6 +40,15 @@ public class Lox {
 
     // Passing the bytearray as string to the run function
     run(new String(bytes, Charset.defaultCharset()));
+
+    /*
+     * EX_DATAERR (65) The input data was incorrect in some way.
+     * This should only be used for user's data and not system
+     * files.
+     */
+
+    if (hadError)
+      System.exit(65);
   }
 
   private static void runPrompt() throws IOException {
@@ -51,10 +62,13 @@ public class Lox {
       if (line == null)
         break;
       run(line);
+
+      // Reset the flag to not kill the entire REPL session
+      hadError = false;
     }
   }
 
-  // Core Function 
+  // Core Function
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
@@ -62,5 +76,17 @@ public class Lox {
     for (Token token : tokens) {
       System.out.println(token);
     }
+  }
+
+  // Error Handling
+  static void error(int line, String message) {
+    report(line, "", message);
+  }
+
+  // Helper function to report error on a given line
+  private static void report(int line, String where, String message) {
+    System.err.println(
+        "[line " + line + "] Error" + where + ": " + message);
+    hadError = true;
   }
 }
