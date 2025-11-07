@@ -1,0 +1,30 @@
+// build.gradle
+
+// Apply the 'java' and 'application' plugins
+plugins {
+    id 'java'
+    id 'application' // Lets us run the project easily
+}
+
+// (Optional but highly recommended) Specify your Java version
+java {
+    // Use the Java version you have installed
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+// Tell the 'application' plugin which class has your main() method
+application {
+    mainClass = 'com.anotherinterpreter.lox.Lox'
+}
+
+// This tells Gradle where to download libraries (dependencies)
+// You don't need it now, but you will later.
+repositories {
+    mavenCentral()
+}
+
+// If you had any dependencies, you would add them here.
+// dependencies {
+//    implementation 'com.google.code.gson:gson:2.10.1'
+// }
