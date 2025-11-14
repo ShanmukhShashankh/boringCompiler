@@ -1,4 +1,4 @@
-package anotherinterpreter.lox;
+package com.anotherinterpreter.lox;
 
 import static com.anotherinterpreter.lox.TokenType.*;
 
@@ -73,4 +73,18 @@ class Scanner {
     return current >= source.length();
   }
 
+  // returns the next character in the source file -> input
+  private char advance() {
+    return source.charAt(current++);
+  }
+
+  private void addToken(TokenType type) {
+    addToken(type, null);
+  }
+
+  // creates a token from the text of the current lexeme -> output
+  private void addToken(TokenType type, Object literal) {
+    String text = source.substring(start, current);
+    tokens.add(new Token(type, text, literal, line));
+  }
 }
