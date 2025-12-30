@@ -78,10 +78,52 @@ class Scanner {
       case '>':
         addToken(match('=') ? GREATER_EQUAL : GREATER);
         break;
+      case '/':
+        if (match('/')) {
+          while (peek() != '\n' && !isAtEnd()) {
+            advance();
+          }
+        } else {
+          addToken(SLASH);
+        }
+        break;
+
+      case ' ':
+      case '\r':
+      case '\t':
+        // Whitespaces
+        break;
+
+      case '\n':
+        line++;
+        break;
+
+      case '"':
+        string();
+        break;
+
       default:
         Lox.error(line, "Unexpected character");
         break;
     }
+  }
+
+  private void string() {
+    while (peek() != '"' && !isAtEnd()) {
+      if (peek() == '\n')
+        line++;
+      advance();
+    }
+
+    if (isAtEnd()) {
+      Lox.error(line, "Unterminated String");
+      return;
+    }
+
+    advance();
+
+    String value = source.substring(start + 1, current - 1);
+    addToken(STRING, value);
   }
 
   private boolean match(char expected) {
@@ -93,6 +135,12 @@ class Scanner {
 
     current++;
     return true;
+  }
+
+  private char peek() { // lookahead
+    if (isAtEnd())
+      return '\0';
+    return source.charAt(current);
   }
 
   private boolean isAtEnd() {
