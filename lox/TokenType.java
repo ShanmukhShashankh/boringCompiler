@@ -1,4 +1,4 @@
-package com.anotherinterpreter.lox;
+package lox;
 
 enum TokenType {
 

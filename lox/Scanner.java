@@ -1,6 +1,6 @@
-package com.anotherinterpreter.lox;
+package lox;
 
-import static com.anotherinterpreter.lox.TokenType.*;
+import static lox.TokenType.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
